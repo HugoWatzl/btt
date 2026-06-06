@@ -40,9 +40,14 @@ public class AlunoService {
     }
 
     private void validarMatricula(Aluno aluno) {
+<<<<<<< HEAD
         if (aluno.getSexo() == Sexo.M &&
                 aluno.getModalidades().contains(TipoArteMarcial.BJJ_FEMININO)) {
 
+=======
+        if (aluno.getSexo() == Sexo.MASCULINO &&
+                aluno.getModalidade() == TipoArteMarcial.JIU_JITSU_FEMININO) {
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             throw new IllegalArgumentException(
                     "Aluno masculino não pode se matricular no Jiu-Jitsu Feminino."
             );
