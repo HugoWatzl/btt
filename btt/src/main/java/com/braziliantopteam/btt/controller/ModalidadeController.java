@@ -32,14 +32,10 @@ public class ModalidadeController {
     }
 
     @PutMapping("/{id}")
-<<<<<<< HEAD
     public Modalidade atualizar(
             @PathVariable Long id,
             @RequestBody Modalidade modalidade) {
 
-=======
-    public Modalidade atualizar(@PathVariable Long id, @RequestBody Modalidade modalidade) {
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
         return modalidadeService.atualizar(id, modalidade);
     }
 

@@ -12,7 +12,6 @@ import java.util.List;
 public class ProfessorDao {
 
     public Professor salvar(Professor professor) {
-<<<<<<< HEAD
         String sqlProfessor = """
                 INSERT INTO professores (nome, email, salario)
                 VALUES (?, ?, ?)
@@ -20,20 +19,10 @@ public class ProfessorDao {
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sqlProfessor, Statement.RETURN_GENERATED_KEYS)) {
-=======
-        String sql = "INSERT INTO professores (nome, email, salario, tipo_de_arte_marcial) VALUES (?, ?, ?, ?)";
-
-        try (Connection conexao = ConexaoFactory.conectar();
-             PreparedStatement stmt = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
             stmt.setString(1, professor.getNome());
             stmt.setString(2, professor.getEmail());
             stmt.setDouble(3, professor.getSalario());
-<<<<<<< HEAD
-=======
-            stmt.setString(4, professor.getTipoDeArteMarcial().name());
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
             stmt.executeUpdate();
 
@@ -42,11 +31,8 @@ public class ProfessorDao {
                 professor.setId(chaves.getLong(1));
             }
 
-<<<<<<< HEAD
             salvarModalidadesDoProfessor(conexao, professor);
 
-=======
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             return professor;
 
         } catch (SQLException erro) {
@@ -63,15 +49,11 @@ public class ProfessorDao {
              ResultSet resultado = stmt.executeQuery()) {
 
             while (resultado.next()) {
-<<<<<<< HEAD
                 Professor professor = mapearProfessor(resultado);
                 professor.setTiposDeArteMarcial(
                         buscarModalidadesDoProfessor(conexao, professor.getId())
                 );
                 professores.add(professor);
-=======
-                professores.add(mapearProfessor(resultado));
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             }
 
             return professores;
@@ -92,15 +74,11 @@ public class ProfessorDao {
             ResultSet resultado = stmt.executeQuery();
 
             if (resultado.next()) {
-<<<<<<< HEAD
                 Professor professor = mapearProfessor(resultado);
                 professor.setTiposDeArteMarcial(
                         buscarModalidadesDoProfessor(conexao, professor.getId())
                 );
                 return professor;
-=======
-                return mapearProfessor(resultado);
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             }
 
             return null;
@@ -111,15 +89,11 @@ public class ProfessorDao {
     }
 
     public Professor atualizar(Long id, Professor professor) {
-<<<<<<< HEAD
         String sql = """
                 UPDATE professores
                 SET nome = ?, email = ?, salario = ?
                 WHERE id = ?
                 """;
-=======
-        String sql = "UPDATE professores SET nome = ?, email = ?, salario = ?, tipo_de_arte_marcial = ? WHERE id = ?";
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -127,23 +101,15 @@ public class ProfessorDao {
             stmt.setString(1, professor.getNome());
             stmt.setString(2, professor.getEmail());
             stmt.setDouble(3, professor.getSalario());
-<<<<<<< HEAD
             stmt.setLong(4, id);
-=======
-            stmt.setString(4, professor.getTipoDeArteMarcial().name());
-            stmt.setLong(5, id);
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
             stmt.executeUpdate();
 
             professor.setId(id);
-<<<<<<< HEAD
 
             deletarModalidadesDoProfessor(conexao, id);
             salvarModalidadesDoProfessor(conexao, professor);
 
-=======
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             return professor;
 
         } catch (SQLException erro) {
@@ -157,11 +123,8 @@ public class ProfessorDao {
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
-<<<<<<< HEAD
             deletarModalidadesDoProfessor(conexao, id);
 
-=======
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             stmt.setLong(1, id);
             stmt.executeUpdate();
 
@@ -177,7 +140,6 @@ public class ProfessorDao {
         professor.setNome(resultado.getString("nome"));
         professor.setEmail(resultado.getString("email"));
         professor.setSalario(resultado.getDouble("salario"));
-<<<<<<< HEAD
 
         return professor;
     }
@@ -226,12 +188,4 @@ public class ProfessorDao {
             stmt.executeUpdate();
         }
     }
-=======
-        professor.setTipoDeArteMarcial(
-                TipoArteMarcial.valueOf(resultado.getString("tipo_de_arte_marcial"))
-        );
-
-        return professor;
-    }
->>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 }
