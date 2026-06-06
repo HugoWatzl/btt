@@ -13,6 +13,7 @@ import java.util.List;
 public class AlunoDao {
 
     public Aluno salvar(Aluno aluno) {
+<<<<<<< HEAD
         String sqlAluno = """
             INSERT INTO alunos (nome, email, telefone, sexo)
             VALUES (?, ?, ?, ?)
@@ -25,6 +26,19 @@ public class AlunoDao {
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
             stmt.setString(4, aluno.getSexo().name());
+=======
+        String sql = "INSERT INTO alunos (nome, matricula, email, telefone, sexo, modalidade) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conexao = ConexaoFactory.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            stmt.setString(1, aluno.getNome());
+            stmt.setString(2, aluno.getMatricula());
+            stmt.setString(3, aluno.getEmail());
+            stmt.setString(4, aluno.getTelefone());
+            stmt.setString(5, aluno.getSexo().name());
+            stmt.setString(6, aluno.getModalidade().name());
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
             stmt.executeUpdate();
 
@@ -33,8 +47,11 @@ public class AlunoDao {
                 aluno.setId(chaves.getLong(1));
             }
 
+<<<<<<< HEAD
             salvarModalidadesDoAluno(conexao, aluno);
 
+=======
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             return aluno;
 
         } catch (SQLException erro) {
@@ -51,9 +68,13 @@ public class AlunoDao {
              ResultSet resultado = stmt.executeQuery()) {
 
             while (resultado.next()) {
+<<<<<<< HEAD
                 Aluno aluno = mapearAluno(resultado);
                 aluno.setModalidades(buscarModalidadesDoAluno(conexao, aluno.getId()));
                 alunos.add(aluno);
+=======
+                alunos.add(mapearAluno(resultado));
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             }
 
             return alunos;
@@ -74,9 +95,13 @@ public class AlunoDao {
             ResultSet resultado = stmt.executeQuery();
 
             if (resultado.next()) {
+<<<<<<< HEAD
                 Aluno aluno = mapearAluno(resultado);
                 aluno.setModalidades(buscarModalidadesDoAluno(conexao, aluno.getId()));
                 return aluno;
+=======
+                return mapearAluno(resultado);
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             }
 
             return null;
@@ -87,28 +112,44 @@ public class AlunoDao {
     }
 
     public Aluno atualizar(Long id, Aluno aluno) {
+<<<<<<< HEAD
         String sql = """
             UPDATE alunos
             SET nome = ?, email = ?, telefone = ?, sexo = ?
             WHERE id = ?
             """;
+=======
+        String sql = "UPDATE alunos SET nome = ?, matricula = ?, email = ?, telefone = ?, sexo = ?, modalidade = ? WHERE id = ?";
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, aluno.getNome());
+<<<<<<< HEAD
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
             stmt.setString(4, aluno.getSexo().name());
             stmt.setLong(5, id);
+=======
+            stmt.setString(2, aluno.getMatricula());
+            stmt.setString(3, aluno.getEmail());
+            stmt.setString(4, aluno.getTelefone());
+            stmt.setString(5, aluno.getSexo().name());
+            stmt.setString(6, aluno.getModalidade().name());
+            stmt.setLong(7, id);
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 
             stmt.executeUpdate();
 
             aluno.setId(id);
+<<<<<<< HEAD
 
             deletarModalidadesDoAluno(conexao, id);
             salvarModalidadesDoAluno(conexao, aluno);
 
+=======
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             return aluno;
 
         } catch (SQLException erro) {
@@ -122,8 +163,11 @@ public class AlunoDao {
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
+<<<<<<< HEAD
             deletarModalidadesDoAluno(conexao, id);
 
+=======
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
             stmt.setLong(1, id);
             stmt.executeUpdate();
 
@@ -137,6 +181,7 @@ public class AlunoDao {
 
         aluno.setId(resultado.getLong("id"));
         aluno.setNome(resultado.getString("nome"));
+<<<<<<< HEAD
         aluno.setEmail(resultado.getString("email"));
         aluno.setTelefone(resultado.getString("telefone"));
         aluno.setSexo(Sexo.valueOf(resultado.getString("sexo")));
@@ -188,4 +233,14 @@ public class AlunoDao {
             stmt.executeUpdate();
         }
     }
+=======
+        aluno.setMatricula(resultado.getString("matricula"));
+        aluno.setEmail(resultado.getString("email"));
+        aluno.setTelefone(resultado.getString("telefone"));
+        aluno.setSexo(Sexo.valueOf(resultado.getString("sexo")));
+        aluno.setModalidade(TipoArteMarcial.valueOf(resultado.getString("modalidade")));
+
+        return aluno;
+    }
+>>>>>>> 73468666dada2620ef7d05e735fa6a4523bcc583
 }
