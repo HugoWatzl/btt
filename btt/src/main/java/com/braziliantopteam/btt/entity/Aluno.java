@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,6 +21,11 @@ public class Aluno {
     private String email;
     private String telefone;
     private Sexo sexo;
+    @Schema(
+            description = "Mensalidade calculada automaticamente",
+            accessMode = Schema.AccessMode.READ_ONLY
+    )
+    private Double mensalidade;
 
     @Schema(
             description = "Modalidade escolhida pelo aluno",

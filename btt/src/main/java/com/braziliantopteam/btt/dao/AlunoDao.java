@@ -14,9 +14,9 @@ public class AlunoDao {
 
     public Aluno salvar(Aluno aluno) {
         String sqlAluno = """
-            INSERT INTO alunos (nome, email, telefone, sexo)
-            VALUES (?, ?, ?, ?)
-            """;
+                INSERT INTO alunos (nome, email, telefone, sexo, mensalidade)
+                VALUES (?, ?, ?, ?, ?)
+                """;
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sqlAluno, Statement.RETURN_GENERATED_KEYS)) {
@@ -25,6 +25,7 @@ public class AlunoDao {
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
             stmt.setString(4, aluno.getSexo().name());
+            stmt.setDouble(5, aluno.getMensalidade());
 
             stmt.executeUpdate();
 
@@ -88,10 +89,10 @@ public class AlunoDao {
 
     public Aluno atualizar(Long id, Aluno aluno) {
         String sql = """
-            UPDATE alunos
-            SET nome = ?, email = ?, telefone = ?, sexo = ?
-            WHERE id = ?
-            """;
+                UPDATE alunos
+                SET nome = ?, email = ?, telefone = ?, sexo = ?, mensalidade = ?
+                WHERE id = ?
+                """;
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -100,7 +101,8 @@ public class AlunoDao {
             stmt.setString(2, aluno.getEmail());
             stmt.setString(3, aluno.getTelefone());
             stmt.setString(4, aluno.getSexo().name());
-            stmt.setLong(5, id);
+            stmt.setDouble(5, aluno.getMensalidade());
+            stmt.setLong(6, id);
 
             stmt.executeUpdate();
 
@@ -140,6 +142,7 @@ public class AlunoDao {
         aluno.setEmail(resultado.getString("email"));
         aluno.setTelefone(resultado.getString("telefone"));
         aluno.setSexo(Sexo.valueOf(resultado.getString("sexo")));
+        aluno.setMensalidade(resultado.getDouble("mensalidade"));
 
         return aluno;
     }
