@@ -78,6 +78,31 @@ public class ModalidadeDao {
         }
     }
 
+    public Double buscarValorPorTipo(TipoArteMarcial tipo) {
+        String sql = """
+                SELECT valor_mensalidade
+                FROM modalidades
+                WHERE tipo = ?
+                """;
+
+        try (Connection conexao = ConexaoFactory.conectar();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, tipo.name());
+
+            ResultSet resultado = stmt.executeQuery();
+
+            if (resultado.next()) {
+                return resultado.getDouble("valor_mensalidade");
+            }
+
+            throw new RuntimeException("Modalidade não encontrada no banco: " + tipo);
+
+        } catch (SQLException erro) {
+            throw new RuntimeException("Erro ao buscar valor da modalidade.", erro);
+        }
+    }
+
     public Modalidade atualizar(Long id, Modalidade modalidade) {
         String sql = """
                 UPDATE modalidades

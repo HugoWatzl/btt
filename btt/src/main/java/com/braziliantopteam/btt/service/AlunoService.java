@@ -1,10 +1,10 @@
 package com.braziliantopteam.btt.service;
 
 import com.braziliantopteam.btt.dao.AlunoDao;
+import com.braziliantopteam.btt.dao.ModalidadeDao;
 import com.braziliantopteam.btt.entity.Aluno;
 import com.braziliantopteam.btt.enums.Sexo;
 import com.braziliantopteam.btt.enums.TipoArteMarcial;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,24 +13,23 @@ import java.util.List;
 public class AlunoService {
 
     private final AlunoDao alunoDao;
+    private final ModalidadeDao modalidadeDao;
     private final CalculoMensalidadeService calculoMensalidadeService;
 
     public AlunoService(
             AlunoDao alunoDao,
+            ModalidadeDao modalidadeDao,
             CalculoMensalidadeService calculoMensalidadeService
     ) {
         this.alunoDao = alunoDao;
+        this.modalidadeDao = modalidadeDao;
         this.calculoMensalidadeService = calculoMensalidadeService;
     }
 
     public Aluno salvar(Aluno aluno) {
-
         validarMatricula(aluno);
 
-        Double mensalidade = calculoMensalidadeService.calcular(
-                200.0,
-                aluno.getModalidades().size()
-        );
+        Double mensalidade = calcularMensalidade(aluno);
 
         aluno.setMensalidade(mensalidade);
 
@@ -48,10 +47,7 @@ public class AlunoService {
     public Aluno atualizar(Long id, Aluno aluno) {
         validarMatricula(aluno);
 
-        Double mensalidade = calculoMensalidadeService.calcular(
-                200.0,
-                aluno.getModalidades().size()
-        );
+        Double mensalidade = calcularMensalidade(aluno);
 
         aluno.setMensalidade(mensalidade);
 
@@ -60,6 +56,18 @@ public class AlunoService {
 
     public void deletar(Long id) {
         alunoDao.deletar(id);
+    }
+
+    private Double calcularMensalidade(Aluno aluno) {
+        Double valorTotalModalidades = aluno.getModalidades()
+                .stream()
+                .mapToDouble(modalidadeDao::buscarValorPorTipo)
+                .sum();
+
+        return calculoMensalidadeService.calcular(
+                valorTotalModalidades,
+                aluno.getModalidades().size()
+        );
     }
 
     private void validarMatricula(Aluno aluno) {
