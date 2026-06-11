@@ -4,9 +4,7 @@ import com.braziliantopteam.btt.dao.AlunoDao;
 import com.braziliantopteam.btt.entity.Aluno;
 import com.braziliantopteam.btt.enums.Sexo;
 import com.braziliantopteam.btt.enums.TipoArteMarcial;
-import com.braziliantopteam.btt.observer.AlunoSubject;
-import com.braziliantopteam.btt.observer.EmailObserver;
-import com.braziliantopteam.btt.observer.LogObserver;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +24,7 @@ public class AlunoService {
     }
 
     public Aluno salvar(Aluno aluno) {
+
         validarMatricula(aluno);
 
         Double mensalidade = calculoMensalidadeService.calcular(
@@ -35,14 +34,7 @@ public class AlunoService {
 
         aluno.setMensalidade(mensalidade);
 
-        Aluno alunoSalvo = alunoDao.salvar(aluno);
-
-        AlunoSubject subject = new AlunoSubject();
-        subject.adicionarObserver(new LogObserver());
-        subject.adicionarObserver(new EmailObserver());
-        subject.notificar(alunoSalvo);
-
-        return alunoSalvo;
+        return alunoDao.salvar(aluno);
     }
 
     public List<Aluno> listarTodos() {

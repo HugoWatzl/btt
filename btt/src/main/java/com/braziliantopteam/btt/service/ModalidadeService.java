@@ -4,6 +4,8 @@ import com.braziliantopteam.btt.dao.ModalidadeDao;
 import com.braziliantopteam.btt.entity.Modalidade;
 import org.springframework.stereotype.Service;
 
+import com.braziliantopteam.btt.factory.ModalidadeFactory;
+import com.braziliantopteam.btt.factory.ModalidadeFactorySelector;
 import java.util.List;
 
 @Service
@@ -16,7 +18,16 @@ public class ModalidadeService {
     }
 
     public Modalidade salvar(Modalidade modalidade) {
-        return modalidadeDao.salvar(modalidade);
+
+        ModalidadeFactory factory =
+                ModalidadeFactorySelector.selecionar(
+                        modalidade.getTipo()
+                );
+
+        Modalidade modalidadePadrao = factory.criar();
+
+
+        return modalidadeDao.salvar(modalidadePadrao);
     }
 
     public List<Modalidade> listarTodos() {

@@ -13,21 +13,35 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Modalidade {
 
+    @Schema(
+            description = "Identificador da modalidade",
+            accessMode = Schema.AccessMode.READ_ONLY
+    )
     private Long id;
 
-
     @Schema(
-            description = "Modalidade escolhida pelo aluno",
+            description = "Tipo da modalidade",
             allowableValues = {
                     "BOXE",
                     "BJJ",
                     "MUAYTHAI",
                     "BJJ_FEMININO"
             },
-            example =  "[\"BJJ_FEMININO\"]"
+            example = "BOXE"
     )
     private TipoArteMarcial tipo;
+
+    @Schema(
+            description = "Descrição feita no Factory Method",
+            accessMode = Schema.AccessMode.READ_ONLY
+    )
     private String descricao;
-    private String horarioAula;
+
+
+
+    @Schema(
+            description = "Valor da mensalidade pelo Factory Method",
+            accessMode = Schema.AccessMode.READ_ONLY
+    )
     private Double valorMensalidade;
 }

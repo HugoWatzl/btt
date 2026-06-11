@@ -12,15 +12,17 @@ import java.util.List;
 public class ModalidadeDao {
 
     public Modalidade salvar(Modalidade modalidade) {
-        String sql = "INSERT INTO modalidades (tipo, descricao, horario_aula, valor_mensalidade) VALUES (?, ?, ?, ?)";
+        String sql = """
+                INSERT INTO modalidades (tipo, descricao, valor_mensalidade)
+                VALUES (?, ?, ?)
+                """;
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setString(1, modalidade.getTipo().name());
             stmt.setString(2, modalidade.getDescricao());
-            stmt.setString(3, modalidade.getHorarioAula());
-            stmt.setDouble(4, modalidade.getValorMensalidade());
+            stmt.setDouble(3, modalidade.getValorMensalidade());
 
             stmt.executeUpdate();
 
@@ -77,16 +79,19 @@ public class ModalidadeDao {
     }
 
     public Modalidade atualizar(Long id, Modalidade modalidade) {
-        String sql = "UPDATE modalidades SET tipo = ?, descricao = ?, horario_aula = ?, valor_mensalidade = ? WHERE id = ?";
+        String sql = """
+                UPDATE modalidades
+                SET tipo = ?, descricao = ?, valor_mensalidade = ?
+                WHERE id = ?
+                """;
 
         try (Connection conexao = ConexaoFactory.conectar();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
 
             stmt.setString(1, modalidade.getTipo().name());
             stmt.setString(2, modalidade.getDescricao());
-            stmt.setString(3, modalidade.getHorarioAula());
-            stmt.setDouble(4, modalidade.getValorMensalidade());
-            stmt.setLong(5, id);
+            stmt.setDouble(3, modalidade.getValorMensalidade());
+            stmt.setLong(4, id);
 
             stmt.executeUpdate();
 
@@ -118,7 +123,6 @@ public class ModalidadeDao {
         modalidade.setId(resultado.getLong("id"));
         modalidade.setTipo(TipoArteMarcial.valueOf(resultado.getString("tipo")));
         modalidade.setDescricao(resultado.getString("descricao"));
-        modalidade.setHorarioAula(resultado.getString("horario_aula"));
         modalidade.setValorMensalidade(resultado.getDouble("valor_mensalidade"));
 
         return modalidade;
